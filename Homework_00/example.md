@@ -13,3 +13,8 @@ This file contains basic Markdown I read online.
 ##### Heading level 5
 
 ###### Heading level 6
+
+# Line Breaks
+
+Lines break when returning after two or more spaces follow a line,  
+like this.
