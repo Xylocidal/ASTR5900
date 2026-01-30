@@ -23,3 +23,9 @@ like this.
 # Text Emphasis
 
 It is easy to modify text to be **bold**, *italic*, or ***both***.
+
+# Code Blocks
+
+Code can be included in Markdown as well, using indentation:
+
+    printf("Like this!");
