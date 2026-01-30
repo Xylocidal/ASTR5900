@@ -29,3 +29,6 @@ It is easy to modify text to be **bold**, *italic*, or ***both***.
 Code can be included in Markdown as well, using indentation:
 
     printf("Like this!");
+
+# Links
+Why not [link](https://github.com/Xylocidal/ASTR5900/blob/main/Homework_00/example.md) this file to itself?
