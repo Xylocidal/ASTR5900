@@ -49,4 +49,4 @@ plt.ylabel('y', fontsize = mediumfont)
 plt.legend(fontsize = smallfont)
 plt.grid()
 
-plt.savefig(directory + 'linear_interpolation.png')
+plt.savefig(directory + 'interpolation_linear.png')
