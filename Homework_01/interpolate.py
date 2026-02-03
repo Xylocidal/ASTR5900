@@ -1,6 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Set font sizes for plots
+smallfont = 12
+mediumfont = 14
+largefont = 16
+
 # Loads the data
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 
@@ -32,3 +37,16 @@ def linear_interpolation(x, y, resolution):
 # Perform linear interpolation on the given data
 resolution = 100
 x_linear, y_linear = linear_interpolation(x, y, resolution)
+
+# Plot the original data and the linear interpolation
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, label='Original Data')
+plt.scatter(x_linear, y_linear, s = 5, label='Linear Interpolation')
+
+plt.title('Linear Interpolation of Data', fontsize = largefont)
+plt.xlabel('x', fontsize = mediumfont)
+plt.ylabel('y', fontsize = mediumfont)
+plt.legend(fontsize = smallfont)
+plt.grid()
+
+plt.savefig(directory + 'linear_interpolation.png')
