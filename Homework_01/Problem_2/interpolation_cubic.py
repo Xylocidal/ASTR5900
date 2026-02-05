@@ -31,5 +31,6 @@ plt.xlabel('x', fontsize = mediumfont)
 plt.ylabel('y', fontsize = mediumfont)
 plt.legend(fontsize = smallfont)
 plt.grid()
+plt.tight_layout()
 
 plt.savefig(directory + 'interpolation_cubic.png')
