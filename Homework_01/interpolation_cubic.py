@@ -22,7 +22,7 @@ x_spline = np.linspace(x.min(), x.max(), 100)
 y_spline = cubic_spline(x_spline)
 
 # Plot the original data and the cubic spline interpolation
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(5, 3))
 plt.scatter(x, y, label='Original Data')
 plt.plot(x_spline, y_spline, label='Cubic Spline Interpolation')
 

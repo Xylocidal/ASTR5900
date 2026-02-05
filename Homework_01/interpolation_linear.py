@@ -13,6 +13,7 @@ data = np.genfromtxt(directory + 'HW01_data.txt', delimiter='\t', skip_header=1)
 x = data[:, 0]
 y = data[:, 1]
 
+#NEED TO RESTRICT VALUES TO INTERVAL OF X SOMEHOW
 # Produces linear interpolation of data with given resolution
 def linear_interpolation(x, y, resolution):
     n = len(x)
@@ -39,7 +40,7 @@ resolution = 100
 x_linear, y_linear = linear_interpolation(x, y, resolution)
 
 # Plot the original data and the linear interpolation
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(5, 3))
 plt.scatter(x, y, label='Original Data')
 plt.scatter(x_linear, y_linear, s = 5, label='Linear Interpolation')
 
