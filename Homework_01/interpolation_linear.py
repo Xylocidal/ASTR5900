@@ -9,7 +9,14 @@ largefont = 16
 # Loads the data
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 
-data = np.genfromtxt(directory + 'HW01_data.txt', delimiter='\t', skip_header=1)
+datatoggle = 1 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
+
+if datatoggle == 1:
+    datafile = 'HW01_data.txt'
+elif datatoggle == 2:
+    datafile = 'HW01_data2.txt'
+
+data = np.genfromtxt(directory + datafile, delimiter='\t', skip_header=1)
 x = data[:, 0]
 y = data[:, 1]
 
@@ -35,7 +42,10 @@ def linear_interpolation(x, y, resolution):
     return x_new, y_new
 
 # Perform linear interpolation on the given data
-resolution = 100
+if datatoggle == 1:
+    resolution = 90
+elif datatoggle == 2:
+    resolution = 110
 x_linear, y_linear = linear_interpolation(x, y, resolution)
 
 # Plot the original data and the linear interpolation
@@ -50,4 +60,4 @@ plt.legend(fontsize = smallfont)
 plt.grid()
 plt.tight_layout()
 
-plt.savefig(directory + 'interpolation_linear.png')
+plt.savefig(directory + 'interpolation_linear' + str(datatoggle) + '.png')
