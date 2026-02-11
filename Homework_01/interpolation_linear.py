@@ -6,7 +6,7 @@ smallfont = 12
 mediumfont = 14
 largefont = 16
 
-# Loads the data
+# Load the data
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 
 datatoggle = 2 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
@@ -20,7 +20,7 @@ data = np.genfromtxt(directory + datafile, delimiter='\t', skip_header=1)
 x = data[:, 0]
 y = data[:, 1]
 
-# Produces linear interpolation of data with given resolution
+# Produce linear interpolation of data with given resolution
 def linear_interpolation(x, y, resolution):
     n = len(x)
     b = y[:-1] #b_i coefficients
@@ -45,7 +45,7 @@ def linear_interpolation(x, y, resolution):
 if datatoggle == 1:
     resolution = 81
 elif datatoggle == 2:
-    resolution = 101
+    resolution = 91
 x_linear, y_linear = linear_interpolation(x, y, resolution)
 
 # Save the relative error to a text file

@@ -7,10 +7,10 @@ smallfont = 12
 mediumfont = 14
 largefont = 16
 
-# Loads the data
+# Load the data
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 
-datatoggle = 1 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
+datatoggle = 2 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
 
 if datatoggle == 1:
     datafile = 'HW01_data.txt'
@@ -28,7 +28,7 @@ cubic_spline = interp.CubicSpline(x, y)
 if datatoggle == 1:
     resolution = 81
 elif datatoggle == 2:
-    resolution = 101
+    resolution = 91
 x_spline = np.linspace(x.min(), x.max(), resolution)
 y_spline = cubic_spline(x_spline)
 
