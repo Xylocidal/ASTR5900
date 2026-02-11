@@ -9,7 +9,7 @@ largefont = 16
 # Loads the data
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 
-datatoggle = 1 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
+datatoggle = 2 #change to 1 for HW01_data.txt, change to 2 for HW01_data2.txt
 
 if datatoggle == 1:
     datafile = 'HW01_data.txt'
@@ -43,10 +43,16 @@ def linear_interpolation(x, y, resolution):
 
 # Perform linear interpolation on the given data
 if datatoggle == 1:
-    resolution = 90
+    resolution = 81
 elif datatoggle == 2:
-    resolution = 110
+    resolution = 101
 x_linear, y_linear = linear_interpolation(x, y, resolution)
+
+# Save the relative error to a text file
+if datatoggle == 2:
+    relative_error = np.abs((y_linear - (np.sin(0.5 * np.pi * x_linear) + 0.5 * x_linear)) / (np.sin(0.5 * np.pi * x_linear) + 0.5 * x_linear))
+    error_data = np.column_stack((x_linear, relative_error))
+    np.savetxt(directory + 'relative_error_linear' + str(datatoggle) + '.txt', error_data, delimiter='\t')
 
 # Plot the original data and the linear interpolation
 plt.figure(figsize=(5, 3))

@@ -26,11 +26,17 @@ cubic_spline = interp.CubicSpline(x, y)
 
 # Generate new x values for plotting the cubic spline
 if datatoggle == 1:
-    resolution = 90
+    resolution = 81
 elif datatoggle == 2:
-    resolution = 110
+    resolution = 101
 x_spline = np.linspace(x.min(), x.max(), resolution)
 y_spline = cubic_spline(x_spline)
+
+# Save the relative error to a text file
+if datatoggle == 2:
+    relative_error = np.abs((y_spline - (np.sin(0.5 * np.pi * x_spline) + 0.5 * x_spline)) / (np.sin(0.5 * np.pi * x_spline) + 0.5 * x_spline))
+    error_data = np.column_stack((x_spline, relative_error))
+    np.savetxt(directory + 'relative_error_cubic' + str(datatoggle) + '.txt', error_data, delimiter='\t')
 
 # Plot the original data and the cubic spline interpolation
 plt.figure(figsize=(5, 3))
