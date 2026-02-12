@@ -45,12 +45,17 @@ def linear_interpolation(x, y, resolution):
 if datatoggle == 1:
     resolution = 81
 elif datatoggle == 2:
-    resolution = 91
+    resolution = 101
 x_linear, y_linear = linear_interpolation(x, y, resolution)
 
 # Save the relative error to a text file
 if datatoggle == 2:
-    relative_error = np.abs((y_linear - (np.sin(0.5 * np.pi * x_linear) + 0.5 * x_linear)) / (np.sin(0.5 * np.pi * x_linear) + 0.5 * x_linear))
+    relative_error = np.zeros(resolution)
+    for i in range(resolution):
+        if i == 0:
+            relative_error[i] = 0 # Set relative error to 0 at the first point to avoid division by zero
+        else:
+            relative_error[i] = (y_linear[i] - (np.sin(0.5 * np.pi * x_linear[i]) + 0.5 * x_linear[i])) / (np.sin(0.5 * np.pi * x_linear[i]) + 0.5 * x_linear[i])
     error_data = np.column_stack((x_linear, relative_error))
     np.savetxt(directory + 'relative_error_linear' + str(datatoggle) + '.txt', error_data, delimiter='\t')
 

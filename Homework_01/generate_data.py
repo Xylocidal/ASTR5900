@@ -10,4 +10,4 @@ y = func(x)
 # Save the data to a text file
 directory = '/Users/xylomolenda/Desktop/ASTR5900/Homework_01/'
 data = np.column_stack((x, y))
-np.savetxt(directory + 'HW01_data2.txt', data, delimiter='\t')
+np.savetxt(directory + 'HW01_data2.txt', data, delimiter='\t', header='x\ty', comments='')

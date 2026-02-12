@@ -28,13 +28,18 @@ cubic_spline = interp.CubicSpline(x, y)
 if datatoggle == 1:
     resolution = 81
 elif datatoggle == 2:
-    resolution = 91
+    resolution = 101
 x_spline = np.linspace(x.min(), x.max(), resolution)
 y_spline = cubic_spline(x_spline)
 
 # Save the relative error to a text file
 if datatoggle == 2:
-    relative_error = np.abs((y_spline - (np.sin(0.5 * np.pi * x_spline) + 0.5 * x_spline)) / (np.sin(0.5 * np.pi * x_spline) + 0.5 * x_spline))
+    relative_error = np.zeros(resolution)
+    for i in range(resolution):
+        if i == 0:
+            relative_error[i] = 0 # Set relative error to 0 at the first point to avoid division by zero
+        else:
+            relative_error[i] = (y_spline[i] - (np.sin(0.5 * np.pi * x_spline[i]) + 0.5 * x_spline[i])) / (np.sin(0.5 * np.pi * x_spline[i]) + 0.5 * x_spline[i])
     error_data = np.column_stack((x_spline, relative_error))
     np.savetxt(directory + 'relative_error_cubic' + str(datatoggle) + '.txt', error_data, delimiter='\t')
 
