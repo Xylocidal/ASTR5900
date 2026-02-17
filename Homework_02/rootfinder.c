@@ -17,6 +17,7 @@ double df1(double x) { // Derivative of f1
 }
 
 void bisection(double (*func)(double), double x0, double x1, double tol) {
+    double epsilon;
     double fx0 = func(x0);
     double fx1 = func(x1);
     if (fx0 * fx1 > 0.) {
@@ -24,19 +25,23 @@ void bisection(double (*func)(double), double x0, double x1, double tol) {
         return;
     }
     double xm, fm;
-    int iter = 0;
+    int iter = 1;
     while (iter < 1000) {
         xm = 0.5 * (x0 + x1); // Midpoint of the interval
         fm = func(xm);
         if (fx0 * fm < 0.) { // Root is in [x0, xm]
-            if (fabs((xm - x0) / xm) < tol) {
+            epsilon = fabs((xm - x0) / xm); // Relative error
+            printf("Iteration %d: x = %.15f\n", iter, xm);
+            if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the bisection method.\n", xm, iter, tol);
             return; // End the while loop if root is found within tolerance
             }
             x1 = xm;
             fx1 = fm;
         } else { // Root is in [xm, x1]
-            if (fabs((xm - x1) / xm) < tol) {
+            epsilon = fabs((xm - x1) / xm); // Relative error
+            printf("Iteration %d: x = %.15f\n", iter, xm);
+            if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the bisection method.\n", xm, iter, tol);
             return; // End the while loop if root is found within tolerance
             }
@@ -53,15 +58,15 @@ void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, d
     double x1;
     double fx = func(x0);
     double dfx = dfunc(x0);
-    int iter = 0;
+    int iter = 1;
     while (iter < 10) {
         if (fabs(dfx) < dtol) {
-            printf("Derivative is too small. No solution found.\n");
+            printf("Derivative is too small. Loop terminated.\n");
             return; // Avoid division by zero
         }
         x1 = x0 - fx / dfx; // Newton-Raphson update
         epsilon = fabs((x1 - x0) / x1); // Relative error
-        // printf("Iteration %d: x = %.15f, f(x) = %.15e, df(x) = %.15e, epsilon = %.15e\n", iter, x1, func(x1), dfunc(x1), epsilon);
+        printf("Iteration %d: x = %.15f\n", iter, x1);
         if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the Newton-Raphson method.\n", x1, iter, tol);
             return; // End the while loop if root is found within tolerance
