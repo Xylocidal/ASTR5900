@@ -1,12 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <math.h>
 
 double f1(double x);
 double df1(double x);
 double f2(double x);
-void bisection(double (*func)(double), double x0, double x1, double tol);
-void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, double tol, double dtol);
+void bisection(double (*func)(double), double x0, double x1, double tol, bool info_toggle);
+void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, double tol, double dtol, bool info_toggle);
 
 double f1(double x) {
     return x * x * x - 7. * x * x + 14. * x - 5.;
@@ -16,7 +17,7 @@ double df1(double x) { // Derivative of f1
     return 3. * x * x - 14. * x + 14.;
 }
 
-void bisection(double (*func)(double), double x0, double x1, double tol) {
+void bisection(double (*func)(double), double x0, double x1, double tol, bool info_toggle) {
     double epsilon;
     double fx0 = func(x0);
     double fx1 = func(x1);
@@ -31,7 +32,9 @@ void bisection(double (*func)(double), double x0, double x1, double tol) {
         fm = func(xm);
         if (fx0 * fm < 0.) { // Root is in [x0, xm]
             epsilon = fabs((xm - x0) / xm); // Relative error
-            printf("Iteration %d: x = %.15f\n", iter, xm);
+            if (info_toggle) {
+                printf("Iteration %d: x = %.15f\n", iter, xm);
+            }
             if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the bisection method.\n", xm, iter, tol);
             return; // End the while loop if root is found within tolerance
@@ -40,7 +43,9 @@ void bisection(double (*func)(double), double x0, double x1, double tol) {
             fx1 = fm;
         } else { // Root is in [xm, x1]
             epsilon = fabs((xm - x1) / xm); // Relative error
-            printf("Iteration %d: x = %.15f\n", iter, xm);
+            if (info_toggle) {
+                printf("Iteration %d: x = %.15f\n", iter, xm);
+            }
             if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the bisection method.\n", xm, iter, tol);
             return; // End the while loop if root is found within tolerance
@@ -53,7 +58,7 @@ void bisection(double (*func)(double), double x0, double x1, double tol) {
     printf("Bisection method did not converge after 1000 iterations.\n");
 }
 
-void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, double tol, double dtol) {
+void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, double tol, double dtol, bool info_toggle) {
     double epsilon;
     double x1;
     double fx = func(x0);
@@ -66,7 +71,9 @@ void NewtonRaphson(double (*func)(double), double (*dfunc)(double), double x0, d
         }
         x1 = x0 - fx / dfx; // Newton-Raphson update
         epsilon = fabs((x1 - x0) / x1); // Relative error
-        printf("Iteration %d: x = %.15f\n", iter, x1);
+        if (info_toggle) {
+            printf("Iteration %d: x = %.15f\n", iter, x1);
+        }
         if (epsilon < tol) {
             printf("Root found at x = %.15f after %d iterations at relative tolerance %e using the Newton-Raphson method.\n", x1, iter, tol);
             return; // End the while loop if root is found within tolerance
@@ -84,8 +91,8 @@ int main() {
     // Print results for problem 2a
     double tol = 1e-8;
     double dtol = 1e-12;
-    bisection(f1, 0., 1., tol);
-    NewtonRaphson(f1, df1, 0., tol, dtol);
+    bisection(f1, 0., 1., tol, true);
+    NewtonRaphson(f1, df1, 0., tol, dtol, true);
 
     return 0;
 }
