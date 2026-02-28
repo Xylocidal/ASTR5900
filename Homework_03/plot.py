@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Font sizes
-smallfont = 12
-mediumfont = 14
-largefont = 16
+smallfont = 16
+mediumfont = 18
+largefont = 20
 
 # Calculate tan(x) for plotting the exact solution
 x_values = np.linspace(0, 2, 1000)
@@ -39,12 +39,14 @@ error_rk4_h_0_05 = rk4_data_h_0_05[:, 2]
 # Plot h = 0.1 data
 plt.figure(figsize=(12, 6))
 plt.plot(x_values, tan_values, label="tan(x)", linestyle='-')
-plt.plot(x_euler_h_0_1, y_euler_h_0_1, label="Euler h = 0.1", marker='o')
-plt.plot(x_rk4_h_0_1, y_rk4_h_0_1, label="RK4 h = 0.1", marker='o')
-plt.ylim(-10, 50)  # Limit y-axis to avoid extreme values
+plt.plot(x_euler_h_0_1, y_euler_h_0_1, label="Euler", marker='o')
+plt.plot(x_rk4_h_0_1, y_rk4_h_0_1, label="RK4", marker='D')
+plt.ylim(-10, 200)  # Limit y-axis to avoid extreme values
 plt.title("Numerical Integration (h = 0.1)", fontsize=largefont)
 plt.xlabel("x", fontsize=mediumfont)
 plt.ylabel("y", fontsize=mediumfont)
+plt.xticks(fontsize=smallfont)
+plt.yticks(fontsize=smallfont)
 plt.legend(fontsize=smallfont)
 plt.grid()
 plt.savefig(directory + "numerical_integration_h_0_1.png")
@@ -52,12 +54,14 @@ plt.savefig(directory + "numerical_integration_h_0_1.png")
 # Plot h = 0.05 data
 plt.figure(figsize=(12, 6))
 plt.plot(x_values, tan_values, label="tan(x)", linestyle='-')
-plt.plot(x_euler_h_0_05, y_euler_h_0_05, label="Euler h = 0.05", marker='o')
-plt.plot(x_rk4_h_0_05, y_rk4_h_0_05, label="RK4 h = 0.05", marker='o')
-plt.ylim(-10, 50)  # Limit y-axis to avoid extreme values
+plt.plot(x_euler_h_0_05, y_euler_h_0_05, label="Euler", marker='o')
+plt.plot(x_rk4_h_0_05, y_rk4_h_0_05, label="RK4", marker='D')
+plt.ylim(-10, 200)  # Limit y-axis to avoid extreme values
 plt.title("Numerical Integration (h = 0.05)", fontsize=largefont)
 plt.xlabel("x", fontsize=mediumfont)
 plt.ylabel("y", fontsize=mediumfont)
+plt.xticks(fontsize=smallfont)
+plt.yticks(fontsize=smallfont)
 plt.legend(fontsize=smallfont)
 plt.grid()
 plt.savefig(directory + "numerical_integration_h_0_05.png")
