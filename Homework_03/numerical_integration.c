@@ -6,6 +6,7 @@ double probability_density(double m, double T, double v);
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps);
 void euler(double (*f)(double, double), double *x, double *y, double h, int steps);
 
+// Parameter list for probability density
 typedef struct {
     double m;
     double T;
@@ -18,21 +19,25 @@ void rk4_ctx(double (*f)(double, double, void *),
              double *x, double *y,
              double h, int steps);
 
+// our ODE RHS             
 double f(double x, double y) {
     return y * y + 1.0;
 }
 
+// Maxwell-Boltzmann velocity distribution
 double probability_density(double m, double T, double v) {
     const double k_B = 1.380649e-23; // Boltzmann constant in J/K
     double exponent = -0.5 * m * v * v / (k_B * T);
     return pow(m / (2.0 * M_PI * k_B * T), 1.5) * 4 * M_PI * v * v * exp(exponent);
 }
 
+// Inputing parameters with PDFparams
 double pdf_rhs(double v, double I, void *params) {
     PDFParams *p = (PDFParams *)params;
     return probability_density(p->m, p->T, v);
 }
 
+// RK4 method numerical integrator for the probability density (original rk4 doesn't allow parameters)
 void rk4_ctx(double (*f)(double, double, void *),
              void *params,
              double *x, double *y,
@@ -50,6 +55,7 @@ void rk4_ctx(double (*f)(double, double, void *),
     }
 }
 
+// RK4 method numerical integrator
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps) {
     double k1, k2, k3, k4;
 
@@ -64,6 +70,7 @@ void rk4(double (*f)(double, double), double *x, double *y, double h, int steps)
     }
 }
 
+// Euler's method numerical integrator
 void euler(double (*f)(double, double), double *x, double *y, double h, int steps) {
     for (int i = 0; i < steps - 1; i++) { // Loop over steps
         y[i + 1] = y[i] + h * f(x[i], y[i]); // Update y
@@ -212,7 +219,7 @@ int main() {
     }
     fclose(fp10);
 
-    // Print probability density to a file over the interval [0, 1000] m/s for a Hydrogen atom at 10000K
+    // Print probability density to a file over the interval [0, 50000] m/s for a Hydrogen atom at 10000K
     double m = 1.6735575e-27; // Mass of a Hydrogen atom in kg
     double T = 10000.0; // Temperature in K
     FILE *fp11 = fopen("probability_density.txt", "w");
@@ -222,20 +229,19 @@ int main() {
     fclose(fp11);
 
     // Integrate the probability density over the speed range using RK4:
-    // I'(v) = p(v), I(0)=0. Then I(v_max) should be ~ 1.
-    int steps6 = 1001;          // include endpoint nicely
+    int steps6 = 2586;
     double v_grid[steps6];
     double integral[steps6];
-    double hstar = 50.0;        // m/s
+    double hstar = 10.0;        // m/s
     double v_max = hstar * (steps6 - 1);
-    v_grid[0] = 0.0;
+    v_grid[0] = 44190.2;
     integral[0] = 0.0;
 
     PDFParams params = { .m = m, .T = T };
 
     rk4_ctx(pdf_rhs, &params, v_grid, integral, hstar, steps6);
 
-    printf("Integral from 0 to %.1f m/s = %.15f\n", v_max, integral[steps6 - 1]);
+    printf("Integral from %.1f to %.1f m/s in steps of %.1f m/s = %.15f\n", v_grid[0], v_grid[0] + (steps6 - 1) * hstar, hstar, integral[steps6 - 1]);
 
     return 0;
 }
