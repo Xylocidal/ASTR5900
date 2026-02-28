@@ -2,11 +2,18 @@
 #include <math.h>
 
 double f(double x, double y);
+double probability_density(double m, double T, double v);
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps);
 void euler(double (*f)(double, double), double *x, double *y, double h, int steps);
 
 double f(double x, double y) {
     return y * y + 1.0;
+}
+
+double probability_density(double m, double T, double v) {
+    const double k_B = 1.380649e-23; // Boltzmann constant in J/K
+    double exponent = -0.5 * m * v * v / (k_B * T);
+    return pow(m / (2.0 * M_PI * k_B * T), 1.5) * 4 * M_PI * v * v * exp(exponent);
 }
 
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps) {
@@ -142,6 +149,15 @@ int main() {
         fprintf(fp8, "%.15f\t%.15f\t%.15f\n", x4[i], y4[i], tan(x4[i]) - y4[i]);
     }
     fclose(fp8);
+
+    // Print probability density to a file over the interval [0, 1000] m/s for a Hydrogen atom at 10000K
+    double m = 1.6735575e-27; // Mass of a Hydrogen atom in kg
+    double T = 10000.0; // Temperature in K
+    FILE *fp9 = fopen("probability_density.txt", "w");
+    for (double v = 0.0; v <= 50000.0; v += 50.0) {
+        fprintf(fp9, "%.2f\t%.15e\n", v, probability_density(m, T, v));
+    }
+    fclose(fp9);
 
     return 0;
 }
