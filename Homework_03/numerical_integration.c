@@ -6,6 +6,18 @@ double probability_density(double m, double T, double v);
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps);
 void euler(double (*f)(double, double), double *x, double *y, double h, int steps);
 
+typedef struct {
+    double m;
+    double T;
+} PDFParams;
+
+double pdf_rhs(double v, double I, void *params);
+
+void rk4_ctx(double (*f)(double, double, void *),
+             void *params,
+             double *x, double *y,
+             double h, int steps);
+
 double f(double x, double y) {
     return y * y + 1.0;
 }
@@ -14,6 +26,28 @@ double probability_density(double m, double T, double v) {
     const double k_B = 1.380649e-23; // Boltzmann constant in J/K
     double exponent = -0.5 * m * v * v / (k_B * T);
     return pow(m / (2.0 * M_PI * k_B * T), 1.5) * 4 * M_PI * v * v * exp(exponent);
+}
+
+double pdf_rhs(double v, double I, void *params) {
+    PDFParams *p = (PDFParams *)params;
+    return probability_density(p->m, p->T, v);
+}
+
+void rk4_ctx(double (*f)(double, double, void *),
+             void *params,
+             double *x, double *y,
+             double h, int steps) {
+    double k1, k2, k3, k4;
+
+    for (int i = 0; i < steps - 1; i++) {
+        k1 = f(x[i],           y[i],           params);
+        k2 = f(x[i] + h / 2.0, y[i] + h*k1/2.0, params);
+        k3 = f(x[i] + h / 2.0, y[i] + h*k2/2.0, params);
+        k4 = f(x[i] + h,       y[i] + h*k3,     params);
+
+        y[i + 1] = y[i] + (h / 6.0) * (k1 + 2*k2 + 2*k3 + k4);
+        x[i + 1] = x[i] + h;
+    }
 }
 
 void rk4(double (*f)(double, double), double *x, double *y, double h, int steps) {
@@ -158,6 +192,23 @@ int main() {
         fprintf(fp9, "%.2f\t%.15e\n", v, probability_density(m, T, v));
     }
     fclose(fp9);
+
+    // Integrate the probability density over the speed range using RK4:
+    // I'(v) = p(v), I(0)=0. Then I(v_max) should be ~ 1.
+    int steps5 = 1001;          // include endpoint nicely
+    double v_grid[steps5];
+    double integral[steps5];
+    double hstar = 50.0;        // m/s
+    double v_max = hstar * (steps5 - 1);
+
+    v_grid[0] = 0.0;
+    integral[0] = 0.0;
+
+    PDFParams params = { .m = m, .T = T };
+
+    rk4_ctx(pdf_rhs, &params, v_grid, integral, hstar, steps5);
+
+    printf("Integral from 0 to %.1f m/s = %.15f\n", v_max, integral[steps5 - 1]);
 
     return 0;
 }
