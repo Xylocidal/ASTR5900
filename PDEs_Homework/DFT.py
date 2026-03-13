@@ -93,9 +93,9 @@ f_reconstructed3 = idft(X3)
 # Plot the original and reconstructed functions
 plt.figure(figsize=(10,5))
 plt.plot(x_samples4, f_samples4, '-', label='Original f(x)')
-plt.plot(x_samples3, f_reconstructed3.real, '--', label='Reconstructed f(x) (N=64)')
-plt.plot(x_samples2, f_reconstructed2.real, '--', label='Reconstructed f(x) (N=32)')
-plt.plot(x_samples1, f_reconstructed1.real, '--', label='Reconstructed f(x) (N=16)')
+plt.plot(x_samples3, f_reconstructed3.real, '^', label='N=64')
+plt.plot(x_samples2, f_reconstructed2.real, 's', label='N=32')
+plt.plot(x_samples1, f_reconstructed1.real, 'o', label='N=16')
 
 plt.title('Original vs Reconstructed Function')
 plt.xlabel('x')
