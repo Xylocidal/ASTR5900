@@ -84,11 +84,21 @@ pcm = plt.pcolormesh(
     shading='auto'
 )
 
-plt.xlabel("x")
-plt.ylabel("t")
-plt.title("Heat Equation Solution")
+plt.xlabel("x", fontsize=16)
+plt.ylabel("t", fontsize=16)
+plt.title("Heat Equation Solution", fontsize=16)
 
-plt.colorbar(pcm, label="u(x,t)")
+cbar = plt.colorbar(pcm)
+
+# Change colorbar label font size
+cbar.set_label("u(x,t)", fontsize=16)
+
+# Change colorbar tick label font size
+cbar.ax.tick_params(labelsize=12)
+
+# Change axis tick label size
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 
 plt.savefig("heat_equation_density.png")
 plt.show()
