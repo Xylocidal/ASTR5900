@@ -65,3 +65,32 @@ def specific_energy(r, v):
     r_mag = np.linalg.norm(r)
     v_mag = np.linalg.norm(v)
     return 0.5 * v_mag**2 - (4 * np.pi**2) / r_mag
+
+energy_euler = specific_energy(r_euler, v_euler)
+energy_leapfrog = specific_energy(r_leapfrog, v_leapfrog)
+
+# Plot the trajectories as a movie
+from matplotlib.animation import FuncAnimation, PillowWriter
+
+fig, ax = plt.subplots(figsize=(8, 8))
+
+def update(i):
+    ax.clear()
+    
+    ax.plot(r_euler[:i, 0], r_euler[:i, 1], 'r-', label='Euler')
+    ax.plot(r_leapfrog[:i, 0], r_leapfrog[:i, 1], 'b-', label='Leapfrog')
+    
+    ax.scatter(0, 0, color='yellow', s=100, label='Sun')
+    
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_title(f'Time = {i*dt:.2f} years')
+    ax.legend()
+    ax.grid()
+
+ani = FuncAnimation(fig, update, frames=steps, interval=20)
+
+# Save as GIF
+ani.save("orbit.gif", writer=PillowWriter(fps=30))
