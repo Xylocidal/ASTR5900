@@ -4,18 +4,35 @@ import matplotlib.pyplot as plt
 def euler_step(r, v, dt):
     """Perform one step of Euler's method."""
     r_mag = np.linalg.norm(r)
-    a = -r / r_mag**3  # Gravitational acceleration
+    a = - (4 * np.pi**2) * r / r_mag**3  # Gravitational acceleration
     r_new = r + v * dt
     v_new = v + a * dt
     return r_new, v_new
 
-def leapfrog_step(r, v, dt):
-    """Perform one step of the leapfrog method."""
+def leapfrog(r, v, dt, steps):
+    r_out = np.zeros((steps, 2))
+    v_out = np.zeros((steps, 2))
+    
+    r_out[0] = r
+    
+    # Initial acceleration
     r_mag = np.linalg.norm(r)
-    a = -r / r_mag**3  # Gravitational acceleration
-    v_new = v + a * dt
-    r_new = r + v_new * dt
-    return r_new, v_new
+    a = - (4 * np.pi**2) * r / r_mag**3
+    
+    # Initialize half-step velocity
+    v_half = v + 0.5 * dt * a
+
+    for i in range(1, steps):
+        r = r + dt * v_half
+        r_mag = np.linalg.norm(r)
+        a = - (4 * np.pi**2) * r / r_mag**3
+        
+        v_half = v_half + dt * a
+        
+        r_out[i] = r
+        v_out[i] = v_half - 0.5 * dt * a
+
+    return r_out, v_out
 
 
 # Initial conditions
@@ -40,7 +57,8 @@ v_leapfrog[0] = v0
 # Run the simulation
 for i in range(1, steps):
     r_euler[i], v_euler[i] = euler_step(r_euler[i-1], v_euler[i-1], dt)
-    r_leapfrog[i], v_leapfrog[i] = leapfrog_step(r_leapfrog[i-1], v_leapfrog[i-1], dt)
+
+r_leapfrog, v_leapfrog = leapfrog(r_leapfrog[0], v_leapfrog[0], dt, steps)
 
 # Compute the specific total energy for both methods
 def specific_energy(r, v):
