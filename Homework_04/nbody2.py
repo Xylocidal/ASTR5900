@@ -39,9 +39,9 @@ def leapfrog(r, v, dt, steps):
 
 # Initial conditions
 r0 = np.array([1.0, 0.0])  # Initial position
-v0 = np.array([0.0, 2.0 * np.pi])  # Initial velocity
+v0 = np.array([0.0, 0.8 * 2.0 * np.pi])  # Initial velocity
 dt = 0.01  # Time step
-tmax = 3.0  # Total simulation time
+tmax = 5.0  # Total simulation time
 steps = int(tmax / dt)
 
 # Arrays to store the trajectory
@@ -88,7 +88,7 @@ def update(i):
 ani = FuncAnimation(fig, update, frames=steps, interval=20)
 
 # Save as GIF
-ani.save("orbit.gif", writer=PillowWriter(fps=30))
+ani.save("orbit2.gif", writer=PillowWriter(fps=30))
 
 # Compute the specific total energy for both methods
 def specific_energy(r, v):
@@ -128,5 +128,5 @@ plt.title('Energy vs Time', fontsize=largefont)
 plt.legend()
 plt.grid()
 plt.tight_layout()
-plt.savefig("energy_speed.png")
+plt.savefig("energy_speed2.png")
 plt.show()
