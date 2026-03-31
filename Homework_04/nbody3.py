@@ -96,6 +96,9 @@ def update(i):
     
     ax.set_xlim(-15, 15)
     ax.set_ylim(-15, 15)
+
+    ax.set_xlabel('x (AU)')
+    ax.set_ylabel('y (AU)')
     
     # Time in months
     time_months = i * dt * 12

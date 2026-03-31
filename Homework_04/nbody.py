@@ -79,8 +79,8 @@ def update(i):
     
     ax.set_xlim(-1.5, 1.5)
     ax.set_ylim(-1.5, 1.5)
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
+    ax.set_xlabel('x (AU)')
+    ax.set_ylabel('y (AU)')
     ax.set_title(f'Time = {i*dt:.2f} years')
     ax.legend()
     ax.grid()
