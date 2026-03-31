@@ -14,6 +14,7 @@ def leapfrog(r, v, dt, steps):
     v_out = np.zeros((steps, 2))
     
     r_out[0] = r
+    v_out[0] = v
     
     # Initial acceleration
     r_mag = np.linalg.norm(r)
@@ -60,15 +61,6 @@ for i in range(1, steps):
 
 r_leapfrog, v_leapfrog = leapfrog(r_leapfrog[0], v_leapfrog[0], dt, steps)
 
-# Compute the specific total energy for both methods
-def specific_energy(r, v):
-    r_mag = np.linalg.norm(r)
-    v_mag = np.linalg.norm(v)
-    return 0.5 * v_mag**2 - (4 * np.pi**2) / r_mag
-
-energy_euler = specific_energy(r_euler, v_euler)
-energy_leapfrog = specific_energy(r_leapfrog, v_leapfrog)
-
 # Plot the trajectories as a movie
 from matplotlib.animation import FuncAnimation, PillowWriter
 
@@ -79,6 +71,8 @@ def update(i):
     
     ax.plot(r_euler[:i, 0], r_euler[:i, 1], 'r-', label='Euler')
     ax.plot(r_leapfrog[:i, 0], r_leapfrog[:i, 1], 'b-', label='Leapfrog')
+    ax.scatter(r_euler[i, 0], r_euler[i, 1], color='red')
+    ax.scatter(r_leapfrog[i, 0], r_leapfrog[i, 1], color='blue')
     
     ax.scatter(0, 0, color='yellow', s=100, label='Sun')
     
@@ -94,3 +88,40 @@ ani = FuncAnimation(fig, update, frames=steps, interval=20)
 
 # Save as GIF
 ani.save("orbit.gif", writer=PillowWriter(fps=30))
+
+# Compute the specific total energy for both methods
+def specific_energy(r, v):
+    r_mag = np.linalg.norm(r, axis=1)
+    v_mag = np.linalg.norm(v, axis=1)
+    return 0.5 * v_mag**2 - (4 * np.pi**2) / r_mag
+
+energy_euler = specific_energy(r_euler, v_euler)
+energy_leapfrog = specific_energy(r_leapfrog, v_leapfrog)
+
+# Compute the speed for both methods
+speed_euler = np.linalg.norm(v_euler, axis=1)
+speed_leapfrog = np.linalg.norm(v_leapfrog, axis=1)
+
+# Plot the speed and energy as a function of time
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(np.arange(steps) * dt, speed_euler, 'r-', label='Euler Speed')
+plt.plot(np.arange(steps) * dt, speed_leapfrog, 'b-', label='Leapfrog Speed')
+plt.xlabel('Time (years)')
+plt.ylabel('Speed (AU/year)')
+plt.title('Speed vs Time')
+plt.legend()
+plt.grid()
+
+plt.subplot(1, 2, 2)
+plt.plot(np.arange(steps) * dt, energy_euler, 'r-', label='Euler Energy')
+plt.plot(np.arange(steps) * dt, energy_leapfrog, 'b-', label='Leapfrog Energy')
+plt.xlabel('Time (years)')
+plt.ylabel('Specific Total Energy (AU^2/year^2)')
+plt.title('Energy vs Time')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.savefig("energy_speed.png")
+plt.show()
