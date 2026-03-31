@@ -99,27 +99,12 @@ def specific_energy(r, v):
 energy_euler = specific_energy(r_euler, v_euler)
 energy_leapfrog = specific_energy(r_leapfrog, v_leapfrog)
 
-# Compute the speed for both methods
-speed_euler = np.linalg.norm(v_euler, axis=1)
-speed_leapfrog = np.linalg.norm(v_leapfrog, axis=1)
-
-# Plot the speed and energy as a function of time
+# Plot the energy as a function of time
 smallfont = 12
 mediumfont = 14
 largefont = 16
 
 plt.figure(figsize=(10, 5))
-
-plt.subplot(1, 2, 1)
-plt.plot(np.arange(steps) * dt, speed_euler, 'r-', label='Euler Speed')
-plt.plot(np.arange(steps) * dt, speed_leapfrog, 'b-', label='Leapfrog Speed')
-plt.xlabel('Time (years)', fontsize=mediumfont)
-plt.ylabel('Speed (AU/year)', fontsize=mediumfont)
-plt.title('Speed vs Time', fontsize=largefont)
-plt.legend()
-plt.grid()
-
-plt.subplot(1, 2, 2)
 plt.plot(np.arange(steps) * dt, energy_euler, 'r-', label='Euler Energy')
 plt.plot(np.arange(steps) * dt, energy_leapfrog, 'b-', label='Leapfrog Energy')
 plt.xlabel('Time (years)', fontsize=mediumfont)
