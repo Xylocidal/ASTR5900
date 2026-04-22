@@ -45,3 +45,9 @@ for N in Ns:
 # print results
 for N in Ns:
     print(f"N = {N}, estimated pi = {pi_estimates[N]:.6f}")
+
+# calculate and print relativeerrors
+true_pi = np.pi
+for N in Ns:
+    relative_error = abs(pi_estimates[N] - true_pi) / true_pi
+    print(f"N = {N}, relative error = {relative_error:.6f}")
