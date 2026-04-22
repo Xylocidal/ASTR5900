@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-np.random.seed(4148379210)
+np.random.seed(4148379212)
 
 Ns = [10, 100, 1000]
 pi_estimates = {}
+x_full = np.random.rand(1000)
+y_full = np.random.rand(1000)
 
 # theta grid for Bayesian step
 theta = np.linspace(1e-6, 1-1e-6, 1000)
@@ -13,8 +15,8 @@ alpha, beta = 1, 1
 prior = theta**(alpha-1) * (1-theta)**(beta-1)
 
 for N in Ns:
-    x = np.random.rand(N)
-    y = np.random.rand(N)
+    x = x_full[:N]
+    y = y_full[:N]
 
     inside = x**2 + y**2 <= 1
 
